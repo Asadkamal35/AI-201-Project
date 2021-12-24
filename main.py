@@ -34,7 +34,8 @@ while gameRunning:
     #########################Displaying our background on window #####################################
     window.fill((255, 255, 255))
     window.blit(background,(0,0))
-    window.blit(helicopter,(player_x,player_y))
+    helicopter=pygame.image.load(os.path.join('helicopter.png'))
+    helicopter=pygame.transform.scale(helicopter,(55,44))
     ############################# checking for user input #############################################
     for event in pygame.event.get():
         # quiting the game if user clicks quit
@@ -43,18 +44,18 @@ while gameRunning:
     #Key Input
     key = pygame.key.get_pressed()
     if key[pygame.K_LEFT] and player_x>0:
-        #helicopter = pygame.transform.rotate(helicopter,(rotate+5))
+        helicopter = pygame.transform.rotate(helicopter,(rotate+5))
         player_x=player_x-5
     if key[pygame.K_RIGHT] and player_x<980:
-        #helicopter = pygame.transform.flip(helicopter,True,False)
-        #helicopter = pygame.transform.rotate(helicopter,(rotate-5))
+        helicopter = pygame.transform.flip(helicopter,True,False)
+        helicopter = pygame.transform.rotate(helicopter,(rotate-5))
         player_x=player_x+5
     if key[pygame.K_UP] and player_y>0:
         player_y=player_y-5
     if key[pygame.K_DOWN] and player_y<550:
         player_y=player_y+5       
     ##############################Updating our window ###############################################
-    #window.blit(helicopter,(player_x,player_y))
+    window.blit(helicopter,(player_x,player_y))
     pygame.display.update()
     #-------------------------------------------------------------------------------
 
