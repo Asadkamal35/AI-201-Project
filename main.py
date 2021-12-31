@@ -55,7 +55,7 @@ while gameRunning:
     if key[pygame.K_UP] and player.get_y()>0:
         player.moveDOWN()
     if key[pygame.K_DOWN] and player.get_y()<550:
-        player.moveDOWN()
+        player.moveUP()
     ###############################updating our game before displaying it on window ######################
     player.update()
     missle_y = missle_y - 5
