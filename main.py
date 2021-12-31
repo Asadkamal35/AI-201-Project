@@ -3,6 +3,7 @@ import time
 import os
 import random
 from Player import *
+from Missile import *
 
 # initializing pygame
 pygame.init()
@@ -24,20 +25,18 @@ class background:
     def draw(self,window):
         window.blit(self.surface,(0,0))
 
-#Missle Added
-missle=pygame.image.load(os.path.join('assets/missile.png'))
-missle=pygame.transform.scale(missle,(20,40))
-missle_x=random.randint(0,1000)
-missle_y=580
 
 gameRunning = True
 FPS=60
 clock=pygame.time.Clock()
 #creating our player
-player=plane(5,window_w,window_h)
+player=plane(7,window_w,window_h)
 #creating our background
 Background=background()
+#creating our missile
+Missi=missile(10,window_w,window_h)
 # main game loop
+
 
 while gameRunning:
     clock.tick(FPS)
@@ -58,11 +57,12 @@ while gameRunning:
         player.moveUP()
     ###############################updating our game before displaying it on window ######################
     player.update()
-    missle_y = missle_y - 5
+    Missi.update(window_w,window_h)
+
     ############################## Displaying our updated settings on window ###############################################
     Background.draw(window)
     player.draw(window)
-    window.blit(missle,(missle_x,missle_y))
+    Missi.draw(window)
     pygame.display.update()
     #-------------------------------------------------------------------------------
 
