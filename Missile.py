@@ -10,6 +10,14 @@ class missile:
         self.__Rect.x=random.randint(0,window_w)
         self.__Rect.y=window_h
         self.__speed=speed
+    def getRectM(self):
+        return self.__Rect
+    def get_x(self):
+        return self.__Rect.x
+
+    def get_y(self):
+        return self.__Rect.y
+    
     def update(self,w,h):
         if self.__Rect.y<-50:
             self.__Rect.x=random.randint(0,w)

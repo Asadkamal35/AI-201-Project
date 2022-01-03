@@ -22,8 +22,11 @@ pygame.display.set_icon(icon)
 class background:
     def __init__(self):
         self.surface=pygame.image.load("assets/background1.jpg")
+        self.imag = pygame.image.load("assets/Gameover (1).png")
     def draw(self,window):
         window.blit(self.surface,(0,0))
+    def draw_game_over(self,window):
+        window.blit(self.imag,(0,0))
 
 
 gameRunning = True
@@ -37,6 +40,7 @@ Background=background()
 Missi=missile(10,window_w,window_h)
 # main game loop
 
+collision=False
 
 while gameRunning:
     clock.tick(FPS)
@@ -58,11 +62,16 @@ while gameRunning:
     ###############################updating our game before displaying it on window ######################
     player.update()
     Missi.update(window_w,window_h)
-
+    
+    if(Missi.getRectM().colliderect(player.getRectP())):
+        collision=True
+    
     ############################## Displaying our updated settings on window ###############################################
     Background.draw(window)
     player.draw(window)
     Missi.draw(window)
+    if(collision==True):
+        Background.draw_game_over(window)
     pygame.display.update()
     #-------------------------------------------------------------------------------
 
