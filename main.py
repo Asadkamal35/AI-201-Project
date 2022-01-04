@@ -22,7 +22,7 @@ pygame.display.set_icon(icon)
 class background:
     def __init__(self):
         self.surface=pygame.image.load("assets/background1.jpg")
-        self.imag = pygame.image.load("assets/Gameover (1).png")
+        self.imag=pygame.image.load("assets/Gameover (1).png")
     def draw(self,window):
         window.blit(self.surface,(0,0))
     def draw_game_over(self,window):
@@ -37,12 +37,12 @@ player=plane(7,window_w,window_h)
 #creating our background
 Background=background()
 #creating our missile
-Missi=missile(10,window_w,window_h)
+Missi=missile(4,window_w,window_h)
 # main game loop
 
 collision=False
 
-while gameRunning:
+while gameRunning==True:
     clock.tick(FPS)
     ############################# User input #############################################
     for event in pygame.event.get():
@@ -59,19 +59,21 @@ while gameRunning:
         player.moveDOWN()
     if key[pygame.K_DOWN] and player.get_y()<550:
         player.moveUP()
-    ###############################updating our game before displaying it on window ######################
+    ############################## updating our game before displaying it on window ##############################
     player.update()
     Missi.update(window_w,window_h)
-    
+
+
     if(Missi.getRectM().colliderect(player.getRectP())):
         collision=True
-    
-    ############################## Displaying our updated settings on window ###############################################
+    ############################## Displaying our updated settings on window ##############################
     Background.draw(window)
     player.draw(window)
     Missi.draw(window)
     if(collision==True):
         Background.draw_game_over(window)
+    ############################## Collison Detection ##############################
+    
     pygame.display.update()
     #-------------------------------------------------------------------------------
 

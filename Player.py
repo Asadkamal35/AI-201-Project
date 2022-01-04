@@ -9,7 +9,6 @@ class plane:
         self.__Rect.y=window_h/2
         self.__speed=speed
         self.__Movements={'UP':False,'DOWN':False,'LEFT':False,'RIGHT':False}
-
     def getRectP(self):
         return self.__Rect
     #to move player rectangle up

@@ -17,7 +17,7 @@ class missile:
 
     def get_y(self):
         return self.__Rect.y
-    
+
     def update(self,w,h):
         if self.__Rect.y<-50:
             self.__Rect.x=random.randint(0,w)
@@ -26,4 +26,3 @@ class missile:
             self.__Rect.y-=self.__speed
     def draw(self,Window):
         Window.blit(self.__surface,self.__Rect)
-
