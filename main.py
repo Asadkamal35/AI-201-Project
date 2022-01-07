@@ -2,7 +2,7 @@ import pygame
 import time
 import os
 import random
-from playsound import playsound
+#from playsound import playsound
 from Player import *
 from Missile import *
 
@@ -40,8 +40,8 @@ player=plane(7,window_w,window_h)
 Background=background()
 
 #creating our missile
-Missi=missile(3,window_w,window_h)
-Missi2=missile(5,window_w,window_h)
+Missi=missile(3,window_w,window_h, "assets/missile.png")
+Missi2=missile(5,window_w,window_h, "assets/missile2.png")
 
 # main game loop
 collision=False
@@ -82,8 +82,8 @@ while gameRunning==True:
     if (collision == True):
         Background.draw_game_over(window)
     else:
-        Missi.update(window_w, window_h, player.get_x(), 3)
-        Missi2.update(window_w, window_h, player.get_x(), 5)
+        Missi.update(window_w, window_h, player.get_x(), 3, player.get_y())
+        Missi2.update(window_w, window_h, player.get_x(), 5, player.get_y())
         Background.draw(window)
         player.draw(window)
         Missi.draw(window)

@@ -1,13 +1,13 @@
 import pygame
 import random
-from playsound import playsound
+#from playsound import playsound
 
 class missile:
 
-    def __init__(self,speed,window_w,window_h):
+    def __init__(self,speed,window_w,window_h,image):
         #playsound('assets/audio.mp3')
         #Creating a missile and passing it in a rectangle
-        self.__surface=pygame.transform.scale(pygame.image.load("assets/missile.png"),size=(15,40))
+        self.__surface=pygame.transform.scale(pygame.image.load(image),size=(15,40))
         self.__Rect=self.__surface.get_rect()
         self.__Rect.x=random.randint(0,window_w)
         self.__Rect.y=window_h
@@ -20,11 +20,13 @@ class missile:
     def get_y(self):
         return self.__Rect.y
 
-    def update(self,w,h,player_x,missi_spped):
-        if player_x < self.__Rect.x:
-            self.__Rect.x = self.__Rect.x-missi_spped
-        elif(player_x > self.__Rect.x):
-           self.__Rect.x = self.__Rect.x+missi_spped
+    def update(self,w,h,player_x,missi_spped,player_y):
+        if player_y<self.__Rect.y:
+            
+            if player_x < self.__Rect.x:
+                self.__Rect.x = self.__Rect.x-missi_spped
+            elif(player_x > self.__Rect.x):
+                self.__Rect.x = self.__Rect.x+missi_spped
         if self.__Rect.y<-50:
             self.__Rect.x=random.randint(0,w)#here should come the best move for computer
             self.__Rect.y=h
