@@ -33,13 +33,15 @@ gameRunning = True
 FPS=60
 clock=pygame.time.Clock()
 #creating our player
+
 player=plane(7,window_w,window_h)
 #creating our background
 Background=background()
+
 #creating our missile
 Missi=missile(4,window_w,window_h)
-# main game loop
 
+# main game loop
 collision=False
 
 while gameRunning==True:
@@ -51,27 +53,35 @@ while gameRunning==True:
             gameRunning = False
     #Key Input
     key = pygame.key.get_pressed()
-    if key[pygame.K_LEFT] and player.get_x()>0:
+    if (key[pygame.K_LEFT] or key[pygame.K_a])and player.get_x()>0:
         player.move_LEFT()
-    if key[pygame.K_RIGHT] and player.get_x()<950:
+    if (key[pygame.K_RIGHT] or key[pygame.K_d]) and player.get_x()<950:
         player.move_RIGHT()
-    if key[pygame.K_UP] and player.get_y()>0:
+    if (key[pygame.K_UP] or key[pygame.K_w]) and player.get_y()>0:
         player.moveDOWN()
-    if key[pygame.K_DOWN] and player.get_y()<550:
+    if (key[pygame.K_DOWN] or key[pygame.K_s]) and player.get_y()<550:
         player.moveUP()
+    if key[pygame.K_x]:
+        player.reset_to_defaultPosition(window_w,window_h)
+        Missi.reset_Position(window_w,window_h)
+        collision=False
+    if key[pygame.K_q]:
+        gameRunning=False
+
     ############################## updating our game before displaying it on window ##############################
     player.update()
-    Missi.update(window_w,window_h)
-
 
     if(Missi.getRectM().colliderect(player.getRectP())):
         collision=True
+
     ############################## Displaying our updated settings on window ##############################
-    Background.draw(window)
-    player.draw(window)
-    Missi.draw(window)
-    if(collision==True):
+    if (collision == True):
         Background.draw_game_over(window)
+    else:
+        Missi.update(window_w, window_h)
+        Background.draw(window)
+        player.draw(window)
+        Missi.draw(window)
     ############################## Collison Detection ##############################
     
     pygame.display.update()

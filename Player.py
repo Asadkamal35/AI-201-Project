@@ -68,3 +68,7 @@ class plane:
     #method to display the image on our window
     def draw(self,Window):
         Window.blit(self.__surface,self.__Rect)
+    def reset_to_defaultPosition(self,window_w,window_h):
+        self.__Rect.x=window_w/2
+        self.__Rect.y=window_h/2
+        self.reset_movement()

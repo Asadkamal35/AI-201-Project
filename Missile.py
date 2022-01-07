@@ -20,9 +20,12 @@ class missile:
 
     def update(self,w,h):
         if self.__Rect.y<-50:
-            self.__Rect.x=random.randint(0,w)
+            self.__Rect.x=random.randint(0,w)#here should come the best move for computer
             self.__Rect.y=h
         else:
             self.__Rect.y-=self.__speed
+    def reset_Position(self,window_w,window_h):
+        self.__Rect.x=random.randint(0,window_w)
+        self.__Rect.y=window_h
     def draw(self,Window):
         Window.blit(self.__surface,self.__Rect)
