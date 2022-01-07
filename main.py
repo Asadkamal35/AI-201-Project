@@ -5,6 +5,7 @@ import random
 #from playsound import playsound
 from Player import *
 from Missile import *
+from explosion import *
 
 # initializing pygame
 pygame.init()
@@ -23,7 +24,7 @@ pygame.display.set_icon(icon)
 class background:
     def __init__(self):
         self.surface=pygame.image.load("assets/background1.jpg")
-        self.imag=pygame.image.load("assets/Gameover (1).png")
+        self.imag=pygame.image.load("assets/Gameover3.png")
     def draw(self,window):
         window.blit(self.surface,(0,0))
     def draw_game_over(self,window):
@@ -42,7 +43,7 @@ Background=background()
 #creating our missile
 Missi=missile(5,window_w,window_h, "assets/missile.png")
 Missi2=missile(6,window_w,window_h, "assets/missile2.png")
-
+explos=explosion()
 # main game loop
 collision=False
 
@@ -80,18 +81,19 @@ while gameRunning==True:
     if(Missi.getRectM().colliderect(player.getRectP())or Missi2.getRectM().colliderect(player.getRectP())):
         collision=True
     if(Missi.getRectM().colliderect(Missi2.getRectM())or Missi2.getRectM().colliderect(Missi.getRectM())):
-        #display explosion here and reset missile data
-        pass
+        explos.draw(window, Missi.get_x(), Missi.get_y())
+        Missi.reset_Position(window_w,window_h)
+        Missi2.reset_Position(window_w,window_h)
     ############################## Displaying our updated settings on window ##############################
     if (collision == True):
         Background.draw_game_over(window)
+        explos.draw(window,player.get_x(), player.get_y())
     else:
         Background.draw(window)
         player.draw(window)
         Missi.draw(window)
         Missi2.draw(window)
     ############################## Collison Detection ##############################
- 
     pygame.display.update()
     #-------------------------------------------------------------------------------
 
