@@ -40,7 +40,8 @@ player=plane(7,window_w,window_h)
 Background=background()
 
 #creating our missile
-Missi=missile(4,window_w,window_h)
+Missi=missile(3,window_w,window_h)
+Missi2=missile(5,window_w,window_h)
 
 # main game loop
 collision=False
@@ -66,6 +67,7 @@ while gameRunning==True:
     if key[pygame.K_x]and collision==True:
         player.reset_to_defaultPosition(window_w,window_h)
         Missi.reset_Position(window_w,window_h)
+        Missi2.reset_Position(window_w,window_h)
         collision=False
     if key[pygame.K_q]and collision==True:
         gameRunning=False
@@ -73,17 +75,19 @@ while gameRunning==True:
     ############################## updating our game before displaying it on window ##############################
     player.update()
 
-    if(Missi.getRectM().colliderect(player.getRectP())):
+    if(Missi.getRectM().colliderect(player.getRectP()) or Missi2.getRectM().colliderect(player.getRectP())):
         collision=True
 
     ############################## Displaying our updated settings on window ##############################
     if (collision == True):
         Background.draw_game_over(window)
     else:
-        Missi.update(window_w, window_h)
+        Missi.update(window_w, window_h, player.get_x(), 3)
+        Missi2.update(window_w, window_h, player.get_x(), 5)
         Background.draw(window)
         player.draw(window)
         Missi.draw(window)
+        Missi2.draw(window)
     ############################## Collison Detection ##############################
  
     pygame.display.update()

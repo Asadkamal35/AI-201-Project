@@ -20,7 +20,11 @@ class missile:
     def get_y(self):
         return self.__Rect.y
 
-    def update(self,w,h):
+    def update(self,w,h,player_x,missi_spped):
+        if player_x < self.__Rect.x:
+            self.__Rect.x = self.__Rect.x-missi_spped
+        elif(player_x > self.__Rect.x):
+           self.__Rect.x = self.__Rect.x+missi_spped
         if self.__Rect.y<-50:
             self.__Rect.x=random.randint(0,w)#here should come the best move for computer
             self.__Rect.y=h
