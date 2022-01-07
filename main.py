@@ -2,6 +2,7 @@ import pygame
 import time
 import os
 import random
+from playsound import playsound
 from Player import *
 from Missile import *
 
@@ -51,21 +52,22 @@ while gameRunning==True:
         # quiting the game if user clicks quit
         if event.type == pygame.QUIT:
             gameRunning = False
-    #Key Input
+    
+            #Key Input
     key = pygame.key.get_pressed()
     if (key[pygame.K_LEFT] or key[pygame.K_a])and player.get_x()>0:
         player.move_LEFT()
-    if (key[pygame.K_RIGHT] or key[pygame.K_d]) and player.get_x()<950:
+    if (key[pygame.K_RIGHT] or key[pygame.K_d]) and player.get_x()<942:
         player.move_RIGHT()
     if (key[pygame.K_UP] or key[pygame.K_w]) and player.get_y()>0:
         player.moveDOWN()
-    if (key[pygame.K_DOWN] or key[pygame.K_s]) and player.get_y()<550:
+    if (key[pygame.K_DOWN] or key[pygame.K_s]) and player.get_y()<530:
         player.moveUP()
-    if key[pygame.K_x]:
+    if key[pygame.K_x]and collision==True:
         player.reset_to_defaultPosition(window_w,window_h)
         Missi.reset_Position(window_w,window_h)
         collision=False
-    if key[pygame.K_q]:
+    if key[pygame.K_q]and collision==True:
         gameRunning=False
 
     ############################## updating our game before displaying it on window ##############################
@@ -83,9 +85,11 @@ while gameRunning==True:
         player.draw(window)
         Missi.draw(window)
     ############################## Collison Detection ##############################
-    
+ 
     pygame.display.update()
+    
     #-------------------------------------------------------------------------------
 
 # quiting pygame
+#playsound('assets/audio.mp3')
 pygame.quit()

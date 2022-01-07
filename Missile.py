@@ -1,9 +1,11 @@
 import pygame
 import random
+from playsound import playsound
 
 class missile:
 
     def __init__(self,speed,window_w,window_h):
+        #playsound('assets/audio.mp3')
         #Creating a missile and passing it in a rectangle
         self.__surface=pygame.transform.scale(pygame.image.load("assets/missile.png"),size=(15,40))
         self.__Rect=self.__surface.get_rect()
