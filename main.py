@@ -35,13 +35,13 @@ FPS=60
 clock=pygame.time.Clock()
 #creating our player
 
-player=plane(7,window_w,window_h)
+player=plane(4,window_w,window_h)
 #creating our background
 Background=background()
 
 #creating our missile
-Missi=missile(3,window_w,window_h, "assets/missile.png")
-Missi2=missile(5,window_w,window_h, "assets/missile2.png")
+Missi=missile(5,window_w,window_h, "assets/missile.png")
+Missi2=missile(6,window_w,window_h, "assets/missile2.png")
 
 # main game loop
 collision=False
@@ -54,7 +54,7 @@ while gameRunning==True:
         if event.type == pygame.QUIT:
             gameRunning = False
     
-            #Key Input
+    #Key Input
     key = pygame.key.get_pressed()
     if (key[pygame.K_LEFT] or key[pygame.K_a])and player.get_x()>0:
         player.move_LEFT()
@@ -73,17 +73,19 @@ while gameRunning==True:
         gameRunning=False
 
     ############################## updating our game before displaying it on window ##############################
-    player.update()
-
-    if(Missi.getRectM().colliderect(player.getRectP()) or Missi2.getRectM().colliderect(player.getRectP())):
+    if collision==False:
+        player.update()
+        Missi.update(window_w, window_h, 2,player.get_x(),player.get_y())
+        Missi2.update(window_w, window_h,3,player.get_x(),player.get_y())
+    if(Missi.getRectM().colliderect(player.getRectP())or Missi2.getRectM().colliderect(player.getRectP())):
         collision=True
-
+    if(Missi.getRectM().colliderect(Missi2.getRectM())or Missi2.getRectM().colliderect(Missi.getRectM())):
+        #display explosion here and reset missile data
+        pass
     ############################## Displaying our updated settings on window ##############################
     if (collision == True):
         Background.draw_game_over(window)
     else:
-        Missi.update(window_w, window_h, player.get_x(), 3, player.get_y())
-        Missi2.update(window_w, window_h, player.get_x(), 5, player.get_y())
         Background.draw(window)
         player.draw(window)
         Missi.draw(window)
@@ -91,7 +93,6 @@ while gameRunning==True:
     ############################## Collison Detection ##############################
  
     pygame.display.update()
-    
     #-------------------------------------------------------------------------------
 
 # quiting pygame

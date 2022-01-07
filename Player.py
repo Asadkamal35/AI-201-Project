@@ -9,6 +9,7 @@ class plane:
         self.__Rect.y=window_h/2
         self.__speed=speed
         self.__Movements={'UP':False,'DOWN':False,'LEFT':False,'RIGHT':False}
+
     def getRectP(self):
         return self.__Rect
     #to move player rectangle up
@@ -26,6 +27,7 @@ class plane:
     # to move player rectangle right
     def move_RIGHT(self):
         self.__Movements['RIGHT'] = True
+
     #to get current x co-ordinate of our player
     def get_x(self):
         return self.__Rect.x
@@ -68,6 +70,7 @@ class plane:
     #method to display the image on our window
     def draw(self,Window):
         Window.blit(self.__surface,self.__Rect)
+
     def reset_to_defaultPosition(self,window_w,window_h):
         self.__Rect.x=window_w/2
         self.__Rect.y=window_h/2
