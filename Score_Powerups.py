@@ -27,6 +27,8 @@ class Power_ups:
     def reset_Position_multiplyer(self,window_w,window_h):
         self.__Rect.x=random.randint(0,window_w-20)
         self.__Rect.y=-2000
+    
+
 
     def draw(self,Window):
         Window.blit(self.__surface,self.__Rect)

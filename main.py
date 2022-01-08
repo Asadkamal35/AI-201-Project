@@ -2,11 +2,14 @@ import pygame
 import time
 import os
 import random
-#from playsound import playsound
+import math
+from playsound import playsound
 from Player import *
 from Missile import *
 from explosion import *
 from Score_Powerups import *
+from Menu_page import *
+import winsound
 
 # initializing pygame
 pygame.init()
@@ -16,6 +19,7 @@ window_w=1000
 window_h=580
 window = pygame.display.set_mode((window_w,window_h))
 
+
 # setting title and icon for our game
 pygame.display.set_caption("Missile Dodger")
 icon = pygame.image.load("assets/icon.png")
@@ -24,20 +28,24 @@ pygame.display.set_icon(icon)
 #class to display the background
 class background:
     def __init__(self):
+        self.start=pygame.image.load("assets/background1.jpg")
         self.surface=pygame.image.load("assets/background1.jpg")
         self.imag=pygame.image.load("assets/Gameover3.png")
     def draw(self,window):
         window.blit(self.surface,(0,0))
     def draw_game_over(self,window):
         window.blit(self.imag,(0,0))
+    def draw_menu(self, window):
+        window.blit(self.start,(0,0))
 
 
 gameRunning = True
 FPS=60
 clock=pygame.time.Clock()
-#creating our player
 
+#creating our player
 player=plane(8,window_w,window_h)
+
 #creating our background
 Background=background()
 
@@ -60,9 +68,50 @@ y=0
 
 font = pygame.font.SysFont('monospace',15)
 
-# main game loop
+# Game menu loop
 collision=False
-found = False
+start = True
+menu = Menu("assets/play.png",460,260,75,75)
+sound_image=Menu("assets/sound.png",950,10,55,55)
+sound_cancel=Menu("assets/sound_cancel.png",950,10,55,55)
+music=True
+while start==True:
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        # quiting the game if user clicks quit
+        if event.type == pygame.QUIT:
+            gameRunning = False
+            start = False
+    
+    pos=pygame.mouse.get_pos()
+    if menu.getRect_mouse().collidepoint(pos):
+        if pygame.mouse.get_pressed()[0]==1:
+            start=False
+    if sound_image.getRect_mouse().collidepoint(pos):
+        if pygame.mouse.get_pressed()[0]==1:
+            music=False
+    elif sound_image.getRect_mouse().collidepoint(pos):
+        if pygame.mouse.get_pressed()[0]==1:
+            music=True
+
+    Background.draw_menu(window)
+    menu.draw(window)
+    if music==False:
+        sound_cancel.draw(window)
+    elif music == True:
+        sound_image.draw(window)
+    pygame.display.update()
+    
+
+
+# main game loop
+if music==True:
+    pygame.mixer.init()
+    pygame.mixer.music.load("assets/audio.mp3")
+    pygame.mixer.music.play()
+
+
+
 
 while gameRunning==True:
     clock.tick(FPS)
@@ -132,9 +181,6 @@ while gameRunning==True:
 
     if(Missi.getRectM().colliderect(Missi2.getRectM()) or Missi2.getRectM().colliderect(Missi.getRectM())):
         exp=50
-        #for x in range (200):
-        #    print("BSDK draw nai ho rha!")
-        #    explos.draw(window, Missi.get_x(), Missi.get_y())
         explos.reset_position()
 
         if(exp==50 ):
@@ -147,6 +193,8 @@ while gameRunning==True:
     if (collision == True):
         Background.draw_game_over(window)
         
+        txt = font.render('Your Score is : ' + str(math.floor(score.val())), True, (225,225,225))
+        window.blit (txt, (10,10))
         #explos.draw(window,player.get_x(), player.get_y())
 
     else:
@@ -157,10 +205,8 @@ while gameRunning==True:
         power_life.draw(window)
         power_score.draw(window)
         if(exp>=0):
-            #if(exp==500 or exp == 499):
-               # x=Missi.get_x()
-               # y=Missi.get_y()
             explos.draw(window,x,y)
+        
         score.draw(window)
         
         txt = font.render('Lifes: ' + str(life), True, (0,0,0))
