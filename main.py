@@ -6,6 +6,7 @@ import random
 from Player import *
 from Missile import *
 from explosion import *
+from Score_Powerups import *
 
 # initializing pygame
 pygame.init()
@@ -36,16 +37,32 @@ FPS=60
 clock=pygame.time.Clock()
 #creating our player
 
-player=plane(4,window_w,window_h)
+player=plane(8,window_w,window_h)
 #creating our background
 Background=background()
 
 #creating our missile
-Missi=missile(5,window_w,window_h, "assets/missile.png")
-Missi2=missile(6,window_w,window_h, "assets/missile2.png")
+Missi=missile(1,window_w,window_h, "assets/missile.png")
+Missi2=missile(2,window_w,window_h, "assets/missile2.png")
 explos=explosion()
+
+#Creating Power Ups
+power_life = Power_ups(2,window_w,window_h,"assets/shield4.0.png")
+power_score = Power_ups(2,window_w,window_h,"assets/mult2.0.png")
+life=1
+
+score=Score()
+multiplyer=0
+exp=0
+x=0
+y=0
+
+
+font = pygame.font.SysFont('monospace',15)
+
 # main game loop
 collision=False
+found = False
 
 while gameRunning==True:
     clock.tick(FPS)
@@ -66,33 +83,90 @@ while gameRunning==True:
     if (key[pygame.K_DOWN] or key[pygame.K_s]) and player.get_y()<530:
         player.moveUP()
     if key[pygame.K_x]and collision==True:
+        life = 1
         player.reset_to_defaultPosition(window_w,window_h)
         Missi.reset_Position(window_w,window_h)
         Missi2.reset_Position(window_w,window_h)
+        score.reset()
         collision=False
     if key[pygame.K_q]and collision==True:
         gameRunning=False
 
+    ##############################################################################################################
+    if (power_score.getRectS().colliderect(player.getRectP())):
+        power_score.reset_Position_multiplyer(window_w,window_h)
+        multiplyer=500
+    
+
+    if (power_life.getRectS().colliderect(player.getRectP())):
+        power_life.reset_Position(window_w,window_h)
+        life=life+1
+        
     ############################## updating our game before displaying it on window ##############################
     if collision==False:
         player.update()
         Missi.update(window_w, window_h, 2,player.get_x(),player.get_y())
         Missi2.update(window_w, window_h,3,player.get_x(),player.get_y())
-    if(Missi.getRectM().colliderect(player.getRectP())or Missi2.getRectM().colliderect(player.getRectP())):
-        collision=True
-    if(Missi.getRectM().colliderect(Missi2.getRectM())or Missi2.getRectM().colliderect(Missi.getRectM())):
-        explos.draw(window, Missi.get_x(), Missi.get_y())
+        power_life.update(window_w, window_h)
+        power_score.update(window_w, window_h)
+        if(multiplyer<=0):
+            score.add(1)
+        else:
+            score.add(5)
+            multiplyer-=1
+
+    if(Missi.getRectM().colliderect(player.getRectP())):
+        print(life) 
+        life=life-1
+        Missi.reset_Position(window_w,window_h)
+        if(life<=0):
+            collision=True
+    if(Missi2.getRectM().colliderect(player.getRectP())):
+        print(life)
+        life=life-1
+        Missi2.reset_Position(window_w,window_h)
+        if(life<=0):
+            collision=True
+
+
+
+    if(Missi.getRectM().colliderect(Missi2.getRectM()) or Missi2.getRectM().colliderect(Missi.getRectM())):
+        exp=50
+        #for x in range (200):
+        #    print("BSDK draw nai ho rha!")
+        #    explos.draw(window, Missi.get_x(), Missi.get_y())
+        explos.reset_position()
+
+        if(exp==50 ):
+            x=Missi.get_x()
+            y=Missi.get_y()
+
         Missi.reset_Position(window_w,window_h)
         Missi2.reset_Position(window_w,window_h)
     ############################## Displaying our updated settings on window ##############################
     if (collision == True):
         Background.draw_game_over(window)
-        explos.draw(window,player.get_x(), player.get_y())
+        
+        #explos.draw(window,player.get_x(), player.get_y())
+
     else:
         Background.draw(window)
         player.draw(window)
         Missi.draw(window)
         Missi2.draw(window)
+        power_life.draw(window)
+        power_score.draw(window)
+        if(exp>=0):
+            #if(exp==500 or exp == 499):
+               # x=Missi.get_x()
+               # y=Missi.get_y()
+            explos.draw(window,x,y)
+        score.draw(window)
+        
+        txt = font.render('Lifes: ' + str(life), True, (0,0,0))
+        window.blit (txt, (10,30))
+
+        exp=exp-1
     ############################## Collison Detection ##############################
     pygame.display.update()
     #-------------------------------------------------------------------------------
