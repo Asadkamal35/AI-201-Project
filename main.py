@@ -52,6 +52,8 @@ Background=background()
 #creating our missile
 Missi=missile(4,window_w,window_h, "assets/missile.png")
 Missi2=missile(5,window_w,window_h, "assets/missile2.png")
+#speed_missi=1
+#speed_missi2=2
 
 # explosions
 end_explos=explosion2()
@@ -62,6 +64,8 @@ power_score = Power_ups(2,window_w,window_h,"assets/mult2.0.png")
 life=1
 
 score=Score()
+#score_count=0.1
+#score_count2=0.1
 multiplyer=0
 exp=0
 x=0
@@ -134,6 +138,8 @@ while gameRunning==True:
         player.reset_to_defaultPosition(window_w,window_h)
         Missi.reset_Position(window_w,window_h)
         Missi2.reset_Position(window_w,window_h)
+        power_score.reset_Position_multiplyer(window_w,window_h)
+        power_life.reset_Position(window_w,window_h)
         score.reset()
         collision=False
     if key[pygame.K_q]and collision==True:
@@ -152,8 +158,16 @@ while gameRunning==True:
     ############################## updating our game before displaying it on window ##############################
     if collision==False:
         player.update()
-        Missi.update(window_w, window_h, 6,player.get_x(),player.get_y())
-        Missi2.update(window_w, window_h,7,player.get_x(),player.get_y())
+        #score_count=score.val()
+       
+        #score_count2=score_count2+0.02        
+        #score_count2 = 100 % score_count
+        #if score_count2 == 110:
+        #    score_count2=0
+        #    speed_missi=speed_missi+10
+        #    speed_missi2=speed_missi2 + 10
+        Missi.update(window_w, window_h, 4, player.get_x(), player.get_y())
+        Missi2.update(window_w, window_h, 5, player.get_x(), player.get_y())
         power_life.update(window_w, window_h)
         power_score.update(window_w, window_h)
         if(multiplyer<=0):
