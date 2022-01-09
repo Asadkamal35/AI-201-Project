@@ -6,7 +6,7 @@ import math
 from playsound import playsound
 from Player import *
 from Missile import *
-from explosion import *
+from explosion2 import *
 from Score_Powerups import *
 from Menu_page import *
 import winsound
@@ -50,9 +50,11 @@ player=plane(8,window_w,window_h)
 Background=background()
 
 #creating our missile
-Missi=missile(1,window_w,window_h, "assets/missile.png")
-Missi2=missile(2,window_w,window_h, "assets/missile2.png")
-explos=explosion()
+Missi=missile(4,window_w,window_h, "assets/missile.png")
+Missi2=missile(5,window_w,window_h, "assets/missile2.png")
+
+# explosions
+end_explos=explosion2()
 
 #Creating Power Ups
 power_life = Power_ups(2,window_w,window_h,"assets/shield4.0.png")
@@ -103,16 +105,13 @@ while start==True:
     pygame.display.update()
     
 
-
-# main game loop
 if music==True:
     pygame.mixer.init()
     pygame.mixer.music.load("assets/audio.mp3")
     pygame.mixer.music.play()
 
 
-
-
+# main game loop
 while gameRunning==True:
     clock.tick(FPS)
     ############################# User input #############################################
@@ -120,7 +119,6 @@ while gameRunning==True:
         # quiting the game if user clicks quit
         if event.type == pygame.QUIT:
             gameRunning = False
-    
     #Key Input
     key = pygame.key.get_pressed()
     if (key[pygame.K_LEFT] or key[pygame.K_a])and player.get_x()>0:
@@ -154,8 +152,8 @@ while gameRunning==True:
     ############################## updating our game before displaying it on window ##############################
     if collision==False:
         player.update()
-        Missi.update(window_w, window_h, 2,player.get_x(),player.get_y())
-        Missi2.update(window_w, window_h,3,player.get_x(),player.get_y())
+        Missi.update(window_w, window_h, 6,player.get_x(),player.get_y())
+        Missi2.update(window_w, window_h,7,player.get_x(),player.get_y())
         power_life.update(window_w, window_h)
         power_score.update(window_w, window_h)
         if(multiplyer<=0):
@@ -168,35 +166,30 @@ while gameRunning==True:
         print(life) 
         life=life-1
         Missi.reset_Position(window_w,window_h)
+        end_explos.draw(window,player.get_x(),player.get_y(),100)
         if(life<=0):
             collision=True
     if(Missi2.getRectM().colliderect(player.getRectP())):
         print(life)
         life=life-1
         Missi2.reset_Position(window_w,window_h)
+        end_explos.draw(window,player.get_x(),player.get_y(),100)
         if(life<=0):
             collision=True
 
 
 
     if(Missi.getRectM().colliderect(Missi2.getRectM()) or Missi2.getRectM().colliderect(Missi.getRectM())):
-        exp=50
-        explos.reset_position()
-
-        if(exp==50 ):
-            x=Missi.get_x()
-            y=Missi.get_y()
+        end_explos.draw(window,Missi.get_x(),Missi.get_y(),200)
+        end_explos.draw(window,Missi2.get_x(),Missi2.get_y(),200)
 
         Missi.reset_Position(window_w,window_h)
         Missi2.reset_Position(window_w,window_h)
     ############################## Displaying our updated settings on window ##############################
     if (collision == True):
         Background.draw_game_over(window)
-        
         txt = font.render('Your Score is : ' + str(math.floor(score.val())), True, (225,225,225))
         window.blit (txt, (10,10))
-        #explos.draw(window,player.get_x(), player.get_y())
-
     else:
         Background.draw(window)
         player.draw(window)
@@ -204,15 +197,11 @@ while gameRunning==True:
         Missi2.draw(window)
         power_life.draw(window)
         power_score.draw(window)
-        if(exp>=0):
-            explos.draw(window,x,y)
-        
         score.draw(window)
         
         txt = font.render('Lifes: ' + str(life), True, (0,0,0))
         window.blit (txt, (10,30))
 
-        exp=exp-1
     ############################## Collison Detection ##############################
     pygame.display.update()
     #-------------------------------------------------------------------------------
